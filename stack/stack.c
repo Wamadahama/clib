@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct stack {
-  int data; 
-  struct stack* next; 
-} stack; 
+#include "stack.h"
 
 int stack_len(stack* s) {
 
@@ -19,38 +16,65 @@ int stack_len(stack* s) {
   return n;
 }
 
-void stack_push(stack* s, int data) {
-  stack* node = malloc(sizeof *s);
-  node->data = data;
-
-  stack* tmp = s->next;
-  s->next = node;
-  node->next = tmp; 
+void print_stack(stack* s) {
+  stack* trav = s;
+  int n = 1; // Including the head  
+  printf("{");
+  while(trav != NULL) {
+    printf("%f, ", trav->data);
+    ++n; 
+    trav = trav->next;
+  }
+  printf("}\n");
 }
 
-stack* stack_pop(stack* s, int* r) {
+stack* stack_push(stack* s, double data) {
+  /*
+  if(s == NULL) {
+
+    stack* node = malloc(sizeof *s);
+    node->data = data;
+    node->next = s;
+    return node; 
+  } else {
+    stack* node = malloc(sizeof *s);
+    node->data = data;
+    stack* tmp = s->next;
+    s->next = node;
+    node->next = tmp; 
+    return s;
+    }*/
+  stack* tmp = malloc(sizeof*tmp);
+  tmp->data = data;
+  tmp->next = s;
+  s = tmp;
+  //printf("%f", s->data);
+  //print_stack(s);
+  return s;
+}
+
+stack* stack_pop(stack* s, double* r) {
   *r = s->data;
   stack* tmp = s;
-  s = s->next;
-  free(tmp);
+  s = tmp->next;
+  //free(tmp);
   return s; 
 }
 
+/*
 int main(void) {
 
   stack* s = malloc(sizeof *s);
-  s->next = NULL; 
-  s->data = 1;
+  s = NULL;
 
-  stack_push(s, 3);
-  stack_push(s, 2);
+  s = stack_push(s, 3);
+  s = stack_push(s, 2);
 
-  int a,b,c;
-  a=b=c=0;
+  double a,b,c;
+  a=b;
   s = stack_pop(s, &a);
   s = stack_pop(s, &b);
-  s = stack_pop(s, &c);
 
-  printf("%d %d %d\n", a,b, c);
- 
+  printf("%f %f\n", a,b);
 }
+*/
